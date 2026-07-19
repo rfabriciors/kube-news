@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: app-kube-news
+data:
+  DB_DATABASE: "kubenews"
+  DB_HOST: "localhost"
+  DB_PORT: "5432"
+  DB_SSL_REQUIRED: "false"
