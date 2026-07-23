@@ -12,6 +12,8 @@ spec:
       labels:
         app: postgresql
     spec:
+      serviceAccountName: kube-news-sa
+      automountServiceAccountToken: false
       containers:
         - name: kube-news-database
           image: postgres:15.0
@@ -35,6 +37,13 @@ spec:
             - name: db
               containerPort: 5432
               protocol: TCP
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "750m"
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
 ---
 apiVersion: v1
 kind: Service
@@ -62,9 +71,12 @@ spec:
       labels:
         app: kubenews
     spec:
+      serviceAccountName: kube-news-sa
+      automountServiceAccountToken: false
       containers:
       - name: kubenews
-        image: rfabricio/kube-news:v1.0
+        image: rfabricio/kube-news:v1.1
+        imagePullPolicy: Always
         env:
           - name: DB_DATABASE
             valueFrom:
@@ -83,12 +95,17 @@ spec:
               secretKeyRef:
                 name: app-kube-news
                 key: DB_PASSWORD
-        # resources:
-        #   limits:
-        #     memory: "128Mi"
-        #     cpu: "500m"
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
         ports:
         - containerPort: 8080
+      # imagePullSecrets:
+      # - name: docker-registry-secret
 ---
 apiVersion: v1
 kind: Service

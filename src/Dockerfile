@@ -1,4 +1,4 @@
-FROM node:20.11.0
+FROM node:26.5.0-trixie
 WORKDIR /app
 COPY package*.json ./
 RUN npm install

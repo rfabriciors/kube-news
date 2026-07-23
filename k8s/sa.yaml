@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: kube-news-sa
+imagePullSecrets:
+  - name: dockerhub-auth
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kube-news-sa-secret
+  annotations:
+    kubernetes.io/service-account.name: kube-news-sa
+type: kubernetes.io/service-account-token
